@@ -41,6 +41,13 @@ module CouchRest::Model
       super(index, *values)
     end
 
+    def concat(arr)
+      if arr.length > 0
+        couchrest_parent_will_change! if use_dirty?
+      end
+      super(arr.map {|obj| instantiate_and_cast(obj) })
+    end
+
     def pop
       couchrest_parent_will_change! if use_dirty? && self.length > 0
       super
